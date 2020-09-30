@@ -1,0 +1,5 @@
+node_modules
+ClientApp/dist/*
+bin
+obj
+wwwroot/dist/*
