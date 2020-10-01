@@ -15,16 +15,15 @@ RUN apt-get update -yq \
     && curl -sL https://deb.nodesource.com/setup_12.x | bash \
     && apt-get install nodejs -yq
 WORKDIR /src
-COPY RCB.TypeScript.csproj RCB.TypeScript/
-RUN dotnet restore "RCB.TypeScript/RCB.TypeScript.csproj"
-COPY . RCB.TypeScript/
-WORKDIR "/src/RCB.TypeScript"
-RUN dotnet build "RCB.TypeScript.csproj" -c Release -o /app/build
+COPY GovForms.csproj .
+RUN dotnet restore "GovForms.csproj"
+COPY . .
+RUN dotnet build "GovForms.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "RCB.TypeScript.csproj" -c Release -o /app/publish
+RUN dotnet publish "GovForms.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RCB.TypeScript.dll"]
+ENTRYPOINT ["dotnet", "GovForms.dll"]

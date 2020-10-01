@@ -3,3 +3,5 @@ ClientApp/dist/*
 bin
 obj
 wwwroot/dist/*
+/Logs
+/ClientApp/components/form.json.ts

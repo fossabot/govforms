@@ -1,4 +1,5 @@
-﻿import "@Styles/Layout.scss";
+﻿import Header from "@Components/shared/Header";
+import "@Styles/Layout.scss";
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import { ToastContainer } from "react-toastify";
@@ -11,7 +12,8 @@ type Props = IProps & RouteComponentProps<any> ;
 
 export default class Layout extends React.Component<Props, {}> {
     public render() {
-        return  <div className="govuk-width-container">
+        return <div><Header/>  <div className="govuk-width-container">
+          
         <main className="govuk-main-wrapper">
     
         <div className="govuk-grid-row">
@@ -21,6 +23,7 @@ export default class Layout extends React.Component<Props, {}> {
         </div>
         <ToastContainer />
       </main>
+      </div>
       </div>
     }
 }

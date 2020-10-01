@@ -1,12 +1,10 @@
-import IFieldModel from "@Models/IFieldModel";
 import * as React from "react";
 import Form from "@Components/Form";
-import ITextFieldModel from "@Models/ITextFieldModel";
-import ICheckboxFieldModel from "@Models/ICheckboxFieldModel";
+import IFFCheckboxFieldModel from "@Models/firmstep/IFFCheckboxFieldModel";
 
 
 export interface IProps {
-    field: ICheckboxFieldModel;
+    field: IFFCheckboxFieldModel;
 }
 
 export default class CheckboxFormField extends React.Component<IProps, {}> {

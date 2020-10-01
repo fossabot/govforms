@@ -1,0 +1,40 @@
+import IFFFieldModel from "@Models/IFFFieldModel";
+import * as React from "react";
+import Form from "@Components/Form";
+import ITextFieldModel from "@Models/IFFTextFieldModel";
+import IFFCheckboxFieldModel from "@Models/firmstep/IFFCheckboxFieldModel";
+import ISelectFieldModel from "@Models/IFFSelectFieldModel";
+
+
+export interface IProps {
+    field: ISelectFieldModel;
+}
+
+export default class SelectFormField extends React.Component<IProps, {}> {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+
+        return (
+          <div className="govuk-form-group">
+
+          {this.props.field.props.labelPosition != "hideLabel" && (
+            <label className="govuk-label" htmlFor={this.props.field.props.dataName}>
+              {this.props.field.props.label}
+            </label>
+          )}
+
+          <select className="govuk-select" id={this.props.field.props.dataName} name={this.props.field.props.dataName}>
+
+            {this.props.field.props.listOfValues?.map(v => {
+              return <option key={v.value} value={v.value}>{v.label}</option>
+            })}
+          </select>
+      </div>);
+                  
+    
+    }
+}

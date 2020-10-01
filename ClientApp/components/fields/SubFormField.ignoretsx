@@ -1,0 +1,25 @@
+import IFFFormModel from "@Models/IFFFormModel";
+import * as React from "react";
+import Form from "@Components/Form";
+import IFFSubFormFieldModel from "@Models/IFFSubFormFieldModel";
+import SectionModel from "@Models/SectionModel";
+
+
+export interface IProps {
+    field: IFFSubFormFieldModel;
+    data: SectionModel;
+}
+
+export default class SubFormField extends React.Component<IProps, {}> {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+
+        return <Form data={this.props.data} form={this.props.field.props.subformDefinition as IFFFormModel} hideSectionTitles hideTitle={this.props.field.props.displayStyle === "summary"}/>
+                  
+    
+    }
+}

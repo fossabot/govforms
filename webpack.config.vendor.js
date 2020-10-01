@@ -8,7 +8,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
-    
+
     var mode = isDevBuild ? "development" : "production";
 
     console.log('\x1b[36m%s\x1b[0m', "=== Webpack vendor compilation mode: " + mode + " ===");
@@ -51,7 +51,6 @@ module.exports = (env) => {
                 'domain-wait',
                 'react-paginating',
                 'axios',
-                'bootstrap/dist/css/bootstrap.min.css',
                 './ClientApp/styles/loaders/applicationLoader.css',
                 'react-toastify/dist/ReactToastify.css',
                 'react-toastify',
@@ -81,7 +80,7 @@ module.exports = (env) => {
         ].concat(isDevBuild ? [
             // Add module names to factory functions so they appear in browser profiler.
             new webpack.NamedModulesPlugin()
-            ] : []),
+        ] : []),
         devtool: isDevBuild ? 'eval-source-map' : false,
         // If you have trouble with the vendor bundle in production mode 
         // you need to uncomment the line below and comment the line above.

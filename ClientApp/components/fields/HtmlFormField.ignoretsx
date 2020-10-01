@@ -1,0 +1,24 @@
+import * as React from "react";
+import IHtmlFieldModel from "@Models/IFFHtmlFieldModel";
+
+export interface IProps {
+    field: IHtmlFieldModel;
+}
+
+export default class HtmlFormField extends React.Component<IProps, {}> {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+
+        if (this.props.field.props.content.indexOf("$") == -1) {
+            return <div dangerouslySetInnerHTML={{__html:this.props.field.props.content}}></div>
+        }
+
+        return "";
+                  
+    
+    }
+}

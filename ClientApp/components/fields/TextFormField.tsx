@@ -1,32 +1,43 @@
-import IFieldModel from "@Models/IFieldModel";
 import * as React from "react";
-import Form from "@Components/Form";
-import ITextFieldModel from "@Models/ITextFieldModel";
+import TextFieldModel from "@Models/TextFieldModel";
+import { observer } from 'mobx-react';
+import FormField from "./FormField";
 
 
-export interface IProps {
-    field: ITextFieldModel;
-}
 
-export default class TextFormField extends React.Component<IProps, {}> {
+@observer
+export default class TextFormField extends FormField<TextFieldModel> {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.field.value = event.target.value;
+  };
 
-        return <div className="govuk-form-group">
-        {this.props.field.props.labelPosition != "hideLabel" && (
-          <h1 className="govuk-label-wrapper"><label className="govuk-label govuk-label--l" htmlFor={this.props.field.props.dataName}>
-              {this.props.field.props.label}
-            </label>
+  render() {
+
+    return (
+      <div className={`govuk-form-group ${this.props.field.validationError ? "govuk-form-group--error" : ""}`}>
+        {this.props.field.showLabel && (
+          <h1 className="govuk-label-wrapper"><label className="govuk-label govuk-label--2" htmlFor={this.props.field.name}>
+            {this.props.field.displayName}
+          </label>
           </h1>
         )}
 
-        <input className="govuk-input" id={this.props.field.props.dataName} name={this.props.field.props.dataName} type="text"/>
+          
+          {this.props.field.validationError && (
+            <span id={this.props.field.name + "-error"} className="govuk-error-message">
+              <span className="govuk-visually-hidden">Error:</span> {this.props.field.validationError}
+            </span>
+          )}
+
+        <input className="govuk-input" id={this.props.field.name} name={this.props.field.name} type="text" value={this.props.field.value} onChange={this.handleChange} aria-describedby={`${this.props.field.validationError ? (this.props.field.name + "-error") : ""}`} />
       </div>
-                  
-    
-    }
+    );
+
+
+  }
 }
