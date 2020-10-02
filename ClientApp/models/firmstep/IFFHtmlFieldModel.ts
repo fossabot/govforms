@@ -5,5 +5,5 @@ export interface IFFHtmlFieldModelProps extends IFFFieldModelProps {
 }
 
 export default interface IFFHtmlFieldModel extends IFFFieldModel {
-    props : IFFFieldModelProps
+    props : IFFHtmlFieldModelProps
 }

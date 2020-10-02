@@ -5,6 +5,8 @@ export interface IFFFieldModelProps {
     labelPosition?: string;
     mandatory?: boolean;
     mandatoryMessage?: string;
+    helpText?: string;
+    displayCondition?: string;
 }
 
 export default interface IFFFieldModel {

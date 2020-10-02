@@ -42,8 +42,8 @@ function setupEvents() {
     showApplicationLoader();
 
     document.addEventListener("DOMContentLoaded", () => {
-        hideApplicationLoader();
         govuk.initAll();
+        hideApplicationLoader();
     });
 };
 

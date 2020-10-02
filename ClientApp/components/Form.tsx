@@ -3,6 +3,7 @@ import * as React from "react";
 import FormSection from "./FormSection";
 import FormModel from "@Models/FormModel";
 import { observer } from "mobx-react";
+import FieldModel from "@Models/FieldModel";
 
 
 export interface IProps {
@@ -31,9 +32,9 @@ export default class Form extends React.Component<IProps, {}> {
                         <div className="govuk-error-summary__body">
                             <ul className="govuk-list govuk-error-summary__list">
                                 { this.props.data.invalidSections.map( s=> 
-                                    s.invalidFields.map( f => 
-                                        <li>
-                                            {f.validationError}
+                                    s.invalidFields.map( (f, i) => 
+                                        <li key={i}>
+                                            <a href="javascript:;" onClick={e => this.focusControl(f)}>{f.validationError}</a>
                                         </li>
                                     )
                                 )}
@@ -88,5 +89,8 @@ export default class Form extends React.Component<IProps, {}> {
             </div>
 
         )
+    }
+    private focusControl = (f: FieldModel<any>) => {
+        f.controls[0].focus();
     }
 }

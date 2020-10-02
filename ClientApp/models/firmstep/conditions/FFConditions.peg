@@ -1,0 +1,41 @@
+start 
+	:= e=expression
+
+expression 
+	:= v=stringExpression tail=tail*
+
+tail
+    := '\(' expression '\)' | orExpression | andExpression | equalsExpression | notEqualsExpression | isExpression | isntExpression
+
+orExpression
+	:= '||' _ rightBool=expression
+    
+andExpression 
+	:= '&&' _ rightBool=expression
+    
+equalsExpression
+	:= '=' _ right=stringExpression
+    
+notEqualsExpression 
+	:= '\<\>|!=' _ right=stringExpression
+    
+isExpression 
+	:= 'is' _ right=stringExpression
+    
+isntExpression 
+	:= 'isnt' _ right=stringExpression
+    
+_ 
+	:= '[ \t]*'
+
+__
+	:= '[ \t]+'
+
+stringExpression 
+	:= fieldName | stringLiteral
+
+fieldName 
+	:= '{' fieldName='[^}]+' '}'
+    
+stringLiteral :=
+	'\'' value='[^\']*' '\''

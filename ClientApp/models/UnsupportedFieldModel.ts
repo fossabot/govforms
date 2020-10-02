@@ -1,14 +1,20 @@
-import { computed } from "mobx";
+import { computed, observable } from "mobx";
 import FieldModel from "./FieldModel"
 import IFFFieldModel from "./Firmstep/IFFFieldModel"
+import SectionModel from "./SectionModel";
 
 export default class UnsupportedFieldModel extends FieldModel<void> {
 
-    constructor(source: IFFFieldModel) {
-        super(FieldModel.getOptions(source))
+    constructor(section: SectionModel, source: IFFFieldModel, details: string) {
+        super(section, FieldModel.getOptions(source, null))
+        this.details = details;
     }
+    
+    @observable
+    details: string;
+    
 
     @computed get validationError() : string {
-        return `Unsupported field type`;
+        return this.details;
     }
 }

@@ -5,6 +5,19 @@ import FieldModel from "@Models/FieldModel";
 import TextFieldModel from "@Models/TextFieldModel";
 import UnsupportedFormField from "./fields/UnsupportedFormField";
 import UnsupportedFieldModel from "@Models/UnsupportedFieldModel";
+import TextAreaFieldModel from "@Models/TextAreaFieldModel";
+import HtmlFieldModel from "@Models/HtmlFieldModel";
+import HtmlFormField from "./fields/HtmlFormField";
+import SubFormField from "./fields/SubFormField";
+import SelectFormField from "./fields/SelectFormField";
+import CheckboxFormField from "./fields/CheckboxFormField";
+import RadioFormField from "./fields/RadioFormField";
+import TextAreaFormField from "./fields/TextAreaFormField";
+import SubFormFieldModel from "@Models/SubFormField";
+import SelectFieldModel from "@Models/SelectFieldModel";
+import CheckboxFieldModel from "@Models/CheckboxFieldModel";
+import RadioFieldModel from "@Models/RadioFieldModel";
+import FormField from "./fields/FormField";
 
 
 export interface IProps {
@@ -20,20 +33,18 @@ export default class FormSection extends React.Component<IProps, {}> {
     renderField(f: FieldModel<object>) {
         if (f instanceof TextFieldModel) {
             return <TextFormField field={f} />
-       /*
-        } else if (f.type == "textarea") {
-            return <TextAreaFormField field={f as IFFTextAreaFieldModel} />
-        } else if (f.type == "radio") {
-            return <RadioFormField field={f as IFFRadioFieldModel} />
-        } else if (f.type == "checkbox") {
-            return <CheckboxFormField field={f as IFFCheckboxFieldModel} />
-        } else if (f.type == "select") {
-            return <SelectFormField field={f as ISelectFieldModel} />
-        } else if (f.type == "subform") {
-            return <SubFormField data={this.props.data} field={f as IFFSubFormFieldModel} />
-        } else if (f.type == "html" || f.type == "staticText") {
-            return <HtmlFormField field={f as IHtmlFieldModel}/>
-            */
+        } else if (f instanceof TextAreaFieldModel) {
+            return <TextAreaFormField field={f} />
+        } else if (f instanceof RadioFieldModel) {
+            return <RadioFormField field={f} />
+        } else if (f instanceof CheckboxFieldModel) {
+            return <CheckboxFormField field={f} />
+        } else if (f instanceof SelectFieldModel) {
+            return <SelectFormField field={f} />
+        } else if (f instanceof SubFormFieldModel) {
+            return <SubFormField field={f} />
+        } else if (f instanceof HtmlFieldModel) {
+            return <HtmlFormField field={f}/>
         } else if (f instanceof UnsupportedFieldModel) {
             return <UnsupportedFormField field={f} />
         } else {

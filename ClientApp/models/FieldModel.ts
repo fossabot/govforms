@@ -1,36 +1,59 @@
+import FormField from '@Components/fields/FormField';
 import { computed, observable } from 'mobx';
+import { Expression } from './expressions/Expression';
+import FFConditionParse from './firmstep/conditions/FFConditionParser';
+import { Parser } from './firmstep/conditions/FFConditions';
 import IFFFieldModel from './Firmstep/IFFFieldModel';
+import SectionModel from './SectionModel';
+import { FieldValidationRuleModel } from './validation/FieldValidationRuleModel';
 
-interface IFieldModelOptions {
-    name: string, 
+interface IFieldModelOptions<T> {
+
+    defaultValue: T;
+    name: string,
     displayName: string,
     showLabel: boolean,
-    visible: boolean,
+    hide: boolean,
     required: boolean,
     requiredErrorMessage: string;
+    hintText: string;
+    displayCondition?: Expression<any>;
 }
 
 export default class FieldModel<T> {
 
-    constructor(options: IFieldModelOptions) {
+    constructor(section: SectionModel, options: IFieldModelOptions<T>) {
+        this.section = section;
         this.name = options.name;
         this.displayName = options.displayName;
         this.showLabel = options.showLabel;
-        this.visible = options.visible;
+        this.hide = options.hide;
         this.required = options.required;
-        this.requiredErrorMessage =  options.requiredErrorMessage ?? `${options.displayName ?? "This field"} is required`
+        this.requiredErrorMessage = options.requiredErrorMessage ?? `'${options.displayName ?? options.name}' is required`
+        this.value = options.defaultValue;
+        this.hintText = options.hintText;
+
+        this.displayCondition = options.displayCondition
     }
 
-    static getOptions(source: IFFFieldModel): IFieldModelOptions {
-        return { 
-            name: source.props.dataName, 
-            displayName: source.props.label, 
-            showLabel: source.props.labelPosition !== "hideLabel", 
-            visible: !source.props.hidden,
+    static getOptions<T>(source: IFFFieldModel, defaultValue: T): IFieldModelOptions<T> {
+        return {
+            name: source.props.dataName,
+            displayName: source.props.label,
+            showLabel: source.props.labelPosition !== "hideLabel",
+            hide: source.props.hidden,
             required: !!source.props.mandatory,
-            requiredErrorMessage: source.props.mandatoryMessage
+            requiredErrorMessage: source.props.mandatoryMessage != "This field is required" ? source.props.mandatoryMessage : undefined,
+            defaultValue: defaultValue,
+            hintText: source.props.helpText,
+            displayCondition: source.props.displayCondition ? FFConditionParse.parse(source.props.displayCondition) : null
         };
     }
+
+    readonly section: SectionModel;
+
+    @observable
+    displayCondition: Expression<any>
 
     @observable
     name: string;
@@ -42,7 +65,19 @@ export default class FieldModel<T> {
     showLabel: boolean = true;
 
     @observable
-    visible: boolean = true;
+    hide: boolean = false;
+
+    @computed get visible() : boolean {
+        if (this.hide) {
+            return false;
+        }
+
+        if (this.displayCondition) {
+            return !!this.displayCondition.getValue(this.section.form);
+        }
+
+        return true;
+    }
 
     @observable
     required: boolean = false;
@@ -53,13 +88,29 @@ export default class FieldModel<T> {
     @observable
     value: T;
 
+    @observable
+    controls: FormField<FieldModel<T>>[] = [];
+
+    @observable
+    validationRules: FieldValidationRuleModel<T>[] = [];
+
+    @observable
+    hintText: string
+
 
     @computed get validationError(): string {
-        if (this.required && (this.value === null || this.value === undefined)) {
+        if (this.required && this.value === null || this.value === undefined || (typeof (this.value) == "string" && this.value === "")) {
             return this.requiredErrorMessage;
-        } else {
-            return null;
         }
+
+        for (let v of this.validationRules) {
+            let errorMessage = v.validate(this, this.section.form);
+            if (errorMessage) {
+                return errorMessage;
+            }
+        }
+
+        return null;
     }
 
 }

@@ -2,6 +2,7 @@ import * as React from "react";
 import TextFieldModel from "@Models/TextFieldModel";
 import { observer } from 'mobx-react';
 import FormField from "./FormField";
+import { supportsGoWithoutReloadUsingHash } from "history/DOMUtils";
 
 
 
@@ -10,9 +11,17 @@ export default class TextFormField extends FormField<TextFieldModel> {
 
   constructor(props) {
     super(props);
+
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  focus(): void {
+    this.inputRef.current.focus();
+    this.inputRef.current.scrollIntoView();
+  }
+
+  private inputRef = React.createRef() as React.RefObject<HTMLInputElement>;
+
+  private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.field.value = event.target.value;
   };
 
@@ -27,14 +36,29 @@ export default class TextFormField extends FormField<TextFieldModel> {
           </h1>
         )}
 
-          
-          {this.props.field.validationError && (
-            <span id={this.props.field.name + "-error"} className="govuk-error-message">
-              <span className="govuk-visually-hidden">Error:</span> {this.props.field.validationError}
-            </span>
-          )}
+        { this.props.field.hintText && (
+          <div id="event-name-hint" className="govuk-hint">
+            {this.props.field.hintText}
+          </div>
+        )}
 
-        <input className="govuk-input" id={this.props.field.name} name={this.props.field.name} type="text" value={this.props.field.value} onChange={this.handleChange} aria-describedby={`${this.props.field.validationError ? (this.props.field.name + "-error") : ""}`} />
+
+        {this.props.field.validationError && (
+          <span id={this.props.field.name + "-error"} className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {this.props.field.validationError}
+          </span>
+        )}
+
+        <input 
+          className="govuk-input" 
+          ref={this.inputRef}
+          id={this.props.field.name}
+          width={this.props.field.width ?? undefined}
+          name={this.props.field.name}
+          type="text"
+          value={this.props.field.value}
+          onChange={this.handleChange}
+          aria-describedby={`${this.props.field.hintText ? (this.props.field.name + "-hint") : ""} ${this.props.field.validationError ? (this.props.field.name + "-error") : ""}`} />
       </div>
     );
 
