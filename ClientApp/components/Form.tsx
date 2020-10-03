@@ -59,14 +59,13 @@ export default class Form extends React.Component<IProps, FormState> {
         this.state = initialState;
     }
 
-
-
-    render() {
+    private renderForm() {
         return (
-            <form noValidate>
-                { (!this.props.hideTitle && <h1 className="govuk-heading-xl">{this.props.data.title}</h1>)}
+            <React.Fragment>
+                {!this.props.hideTitle && <h1 className="govuk-heading-xl">{this.props.data.title}</h1>}
 
-                { this.props.data.invalidSections.length > 0 &&
+                {
+                   !this.props.data.parent && this.props.data.invalidSections.length > 0 &&
                     <div className="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabIndex={-1} data-module="govuk-error-summary">
                         <h2 className="govuk-error-summary__title" id="error-summary-title">
                             There is a problem
@@ -86,22 +85,24 @@ export default class Form extends React.Component<IProps, FormState> {
                     </div>
                 }
 
-                { this.props.hideSectionTitles && (
-                    this.props.data.visibleSections.map(s => {
-                        return (
-                            <div key={s.name} id={s.name}>
-                                <FormSection data={s} />
-                            </div>
-                        );
-                    })
-                )}
+                {
+                    this.props.hideSectionTitles && (
+                        this.props.data.visibleSections.map(s => {
+                            return (
+                                <div key={s.name} id={s.name}>
+                                    <FormSection hideTitle data={s} />
+                                </div>
+                            );
+                        })
+                    )
+                }
 
-                { !this.props.hideSectionTitles && (
+                {  !this.props.hideSectionTitles && (
                     <div className="govuk-tabs" data-module="govuk-tabs">
 
                         <h2 className="govuk-tabs__title">
                             Sections
-    </h2>
+                            </h2>
                         <ul className="govuk-tabs__list">
 
                             {this.props.data.visibleSections.map((s, i) => {
@@ -130,20 +131,35 @@ export default class Form extends React.Component<IProps, FormState> {
                 )}
 
 
-                {this.props.data.visibleSections.indexOf(this.state.currentSection) > 0 &&
+                {
+                    this.props.data.visibleSections.indexOf(this.state.currentSection) > 0 &&
                     <a href="#" role="button" draggable="false" className="govuk-button govuk-button--secondary" data-module="govuk-button" onClick={this.handlePrevSectionClick}>
                         Back
-                </a>
+        </a>
                 }
 &nbsp;&nbsp;
-                {this.props.data.visibleSections.length > this.props.data.visibleSections.indexOf(this.state.currentSection) + 1 &&
+                {
+                    this.props.data.visibleSections.length > this.props.data.visibleSections.indexOf(this.state.currentSection) + 1 &&
                     <a href="#" role="button" draggable="false" className="govuk-button" data-module="govuk-button" onClick={this.handleNextSectionClick}>
                         Next
-                </a>
+        </a>
                 }
-            </form>
-
+            </React.Fragment>
         )
+    }
+
+
+    render() {
+        if (this.props.data.parent) {
+            return this.renderForm();
+        } else {
+            return (
+                <form noValidate>
+                    {this.renderForm()}
+                </form>
+
+            );
+        }
     }
     private focusControl = (f: FieldModel<any>) => {
         f.controls[0].focus();

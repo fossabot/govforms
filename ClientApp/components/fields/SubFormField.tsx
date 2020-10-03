@@ -3,6 +3,7 @@ import FormField from "./FormField";
 import SubFormFieldModel from "@Models/SubFormField";
 import FormSection from "@Components/FormSection";
 import { observer } from "mobx-react";
+import Form from "@Components/Form";
 
 @observer
 export default class SubFormField extends FormField<SubFormFieldModel> {
@@ -11,14 +12,11 @@ export default class SubFormField extends FormField<SubFormFieldModel> {
         super(props);
     }
 
-    private divRef = React.createRef<FormSection>();
-
     focus() {
 
     }
 
     render() {
-        return this.props.field.value.visible &&
-            <FormSection ref={this.divRef} data={this.props.field.value} />
+        return <Form hideSectionTitles hideTitle data={this.props.field.value} />
     }
 }

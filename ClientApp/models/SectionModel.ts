@@ -77,9 +77,6 @@ export default class SectionModel {
     @observable
     fields: FieldModel<any>[]
 
-    @observable
-    hideTitle: boolean = false;
-
     @computed get invalidFields(): FieldModel<any>[] {
         return this.fields.filter(f => f.validationError);
     }

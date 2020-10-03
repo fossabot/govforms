@@ -21,6 +21,7 @@ interface IFieldModelOptions<T> {
     hintText: string;
     displayCondition: Expression<any>;
     validationRules: FieldValidationRuleModel<any>[];
+    metadata: {[key:string] : {}}
 }
 
 const REGEX_SPLIT = /^\/(.*)\/([^/]*)$/;
@@ -70,7 +71,10 @@ export default class FieldModel<T> {
             defaultValue: defaultValue,
             hintText: source.props.helpText,
             displayCondition: source.props.displayCondition ? FFConditionParse.parse(source.props.displayCondition) : null,
-            validationRules: validationRules
+            validationRules: validationRules,
+            metadata: {
+                "firmstep": source
+            }
         };
     }
 

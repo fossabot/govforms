@@ -29,6 +29,7 @@ import MultiCheckboxFormField from "./fields/MultiCheckboxFormField";
 
 export interface IProps {
     data: SectionModel;
+    hideTitle?: boolean
 }
 
 @observer
@@ -70,7 +71,7 @@ export default class FormSection extends React.Component<IProps, {}> {
         return (
 
             <div>
-                {!this.props.data.hideTitle && (
+                {!this.props.hideTitle && (
                     <h2 className="govuk-heading-l">{this.props.data.displayName}</h2>
                 )}
 

@@ -14,7 +14,7 @@ export default class DateFieldModel extends FieldModel<moment.Moment> {
     }
 
     @computed
-    protected get validateImmediate() : string {
+    protected get validate() : string {
         return this.value === null || this.value.isValid() ? null : this.displayName + " must be a valid date";
     }
 
