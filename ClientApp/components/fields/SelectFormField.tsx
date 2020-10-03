@@ -46,7 +46,7 @@ export default class SelectFormField extends FormField<SelectFieldModel> {
           </span>
         )}
 
-        <select ref={this.selectRef} className="govuk-select" id={this.props.field.name} name={this.props.field.name}  value={this.props.field.value} onChange={this.handleChange} aria-describedby={`${this.props.field.hintText ? (this.props.field.name + "-hint") : ""}`}>
+        <select ref={this.selectRef} className="govuk-select" id={this.props.field.name} name={this.props.field.name}  value={this.props.field.value ?? ""} onChange={this.handleChange} aria-describedby={`${this.props.field.hintText ? (this.props.field.name + "-hint") : ""}`}>
 
           {this.props.field.choices?.map(v => {
             return <option key={v.value} value={v.value}>{v.label}</option>

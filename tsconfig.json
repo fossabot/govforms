@@ -6,6 +6,8 @@
     "target": "es5",
     "jsx": "react",
     "sourceMap": true,
+    "declaration": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
     "skipDefaultLibCheck": true,
     "strict": false,
@@ -15,7 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "lib": [ "es6", "dom", "es2018", "esnext" ],
-    "types": [ "webpack-env" ],
+    "types": [ "webpack-env", "jest" ],
     "paths": {
       "@Store/*": [ "./store/*" ],
       "@Core/*": [ "./core/*" ],

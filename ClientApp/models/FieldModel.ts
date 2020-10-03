@@ -53,9 +53,6 @@ export default class FieldModel<T> {
     readonly section: SectionModel;
 
     @observable
-    displayCondition: Expression<any>
-
-    @observable
     name: string;
 
     @observable
@@ -66,6 +63,9 @@ export default class FieldModel<T> {
 
     @observable
     hide: boolean = false;
+
+    @observable
+    displayCondition: Expression<any>
 
     @computed get visible() : boolean {
         if (this.hide) {
@@ -99,6 +99,10 @@ export default class FieldModel<T> {
 
 
     @computed get validationError(): string {
+        if (!this.section.enableValidation) {
+            return null;
+        }
+
         if (this.required && this.value === null || this.value === undefined || (typeof (this.value) == "string" && this.value === "")) {
             return this.requiredErrorMessage;
         }

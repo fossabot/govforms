@@ -21,7 +21,7 @@ export default class ExpressionFieldValidationRuleModel extends FieldValidationR
 
     validate(field: FieldModel<string>, form: FormModel): string {
 
-        return !!this.expression.getValue(form) ? null : this.errorMessage;
+        return (!!this.expression.getValue(form)) ? null : this.errorMessage;
     }
 
 }

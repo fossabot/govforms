@@ -4,4 +4,7 @@ export default interface IFFSectionModel {
     name: string;
     id: string;
     fields: IFFFieldModel[];
+    props: {
+        displayCondition?: string
+    }
 }

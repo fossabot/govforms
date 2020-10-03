@@ -19,6 +19,7 @@ export default class RegexFieldValidationRuleModel extends FieldValidationRuleMo
     validate(field: FieldModel<string>): string {
 
         if (field.value && !this.regex.test(field.value)) {
+            console.log(`Value '${field.value}' - ${this.errorMessage}`)
             return this.errorMessage;
         }
         return null;

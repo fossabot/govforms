@@ -17,10 +17,13 @@ export class EqualsExpression extends Expression<boolean> {
 
     getValue(form: FormModel) : boolean {
 
-        if (!this.notEquals) {
-            return this.left.getValue(form) != this.right.getValue(form);
+        let leftValue = this.left.getValue(form) ?? "";
+        let rightValue = this.right.getValue(form) ?? "";
+
+        if (this.notEquals) {
+            return leftValue != rightValue;
         } else {
-            return this.left.getValue(form) == this.right.getValue(form);
+            return leftValue == rightValue;
         }
     }
 

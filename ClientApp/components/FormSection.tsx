@@ -18,12 +18,14 @@ import SelectFieldModel from "@Models/SelectFieldModel";
 import CheckboxFieldModel from "@Models/CheckboxFieldModel";
 import RadioFieldModel from "@Models/RadioFieldModel";
 import FormField from "./fields/FormField";
+import { observer } from "mobx-react";
 
 
 export interface IProps {
     data: SectionModel;
 }
 
+@observer
 export default class FormSection extends React.Component<IProps, {}> {
 
     constructor(props) {

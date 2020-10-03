@@ -18,6 +18,8 @@ import TextFieldModel from './TextFieldModel';
 import SubFormFieldModel from './SubFormField';
 import UnsupportedFieldModel from './UnsupportedFieldModel';
 import FormModel from './FormModel';
+import { Expression } from './expressions/Expression';
+import FFConditionParser from './firmstep/conditions/FFConditionParser';
 
 export default class SectionModel {
 
@@ -26,6 +28,7 @@ export default class SectionModel {
         this.displayName = source.name
         this.fields = [];
         this.form = form;
+        this.displayCondition = source.props.displayCondition ? FFConditionParser.parse(source.props.displayCondition) : null;
 
         for (let field of source.fields) {
             if (field.type == "text") {
@@ -46,6 +49,8 @@ export default class SectionModel {
                 this.fields.push(new SelectFieldModel(this, field as IFFSelectFieldModel));
             } else if (field.type == "html" || field.type == "staticText") {
                 this.fields.push(new HtmlFieldModel(this, field as IFFHtmlFieldModel));
+            } else if (field.type == "line") {
+                //ignored
             } else {
                 this.fields.push(new UnsupportedFieldModel(this, field, `Unsupported field type '${field.type}'`));
             }
@@ -68,6 +73,27 @@ export default class SectionModel {
 
     @computed get invalidFields(): FieldModel<any>[] {
         return this.fields.filter(f => f.validationError);
+    }
+
+    @observable
+    enableValidation: boolean = false;
+
+    @observable
+    hide: boolean = false;
+
+    @observable
+    displayCondition: Expression<any>
+
+    @computed get visible() : boolean {
+        if (this.hide) {
+            return false;
+        }
+
+        if (this.displayCondition) {
+            return !!this.displayCondition.getValue(this.form);
+        }
+
+        return true;
     }
 
 }

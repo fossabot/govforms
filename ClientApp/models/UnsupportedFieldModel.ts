@@ -15,6 +15,9 @@ export default class UnsupportedFieldModel extends FieldModel<void> {
     
 
     @computed get validationError() : string {
+        if (!this.section.enableValidation) {
+            return null;
+        }
         return this.details;
     }
 }

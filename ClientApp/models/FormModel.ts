@@ -4,9 +4,13 @@ import IFFFormModel from "./firmstep/IFFFormModel";
 import SectionModel from "./SectionModel";
 
 export default class FormModel {
+    getSection(sectionName: string) {
+        return this.sections.find(s => s.name.toLowerCase() === sectionName.toLowerCase());
+    }
+    
     
     getField(fieldName: string) : FieldModel<any> {
-        return this.sections.flatMap(s => s.fields).find(f => f.name === fieldName)
+        return this.sections.flatMap(s => s.fields).find(f => f.name.toLowerCase() === fieldName.toLowerCase())
     }
 
     constructor(source: IFFFormModel) {
@@ -21,6 +25,10 @@ export default class FormModel {
 
     @computed get invalidSections() : SectionModel[] {
         return this.sections.filter(f => f.invalidFields.length > 0);
+    }
+
+    @computed get visibleSections() : SectionModel[] {
+        return this.sections.filter(f => f.visible);
     }
 
 }

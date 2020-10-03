@@ -18,9 +18,7 @@ export default class SubFormField extends FormField<SubFormFieldModel> {
     }
 
     render() {
-
-        return <FormSection ref={this.divRef} data={this.props.field.value}  />
-                  
-    
+        return this.props.field.value.visible &&
+            <FormSection ref={this.divRef} data={this.props.field.value} />
     }
 }

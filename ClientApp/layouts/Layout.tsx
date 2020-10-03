@@ -1,4 +1,5 @@
-﻿import Header from "@Components/shared/Header";
+﻿import Footer from "@Components/shared/Footer";
+import Header from "@Components/shared/Header";
 import "@Styles/Layout.scss";
 import * as React from "react";
 import { RouteComponentProps } from "react-router";
@@ -24,6 +25,7 @@ export default class Layout extends React.Component<Props, {}> {
         <ToastContainer />
       </main>
       </div>
+      <Footer/>
       </div>
     }
 }
