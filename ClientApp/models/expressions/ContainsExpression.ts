@@ -27,7 +27,7 @@ export class ContainsExpression extends Expression<boolean> {
             list = left;
         }
 
-        return ( !this.caseInsensitive && list.includes(right)) || (this.caseInsensitive && list.some(i => i?.toString().localeCompare(right?.toString(), undefined, { sensitivity: 'accent' }) ) )
+        return ( !this.caseInsensitive && list.includes(right)) || (this.caseInsensitive && list.some(i => i?.toString().localeCompare(right?.toString(), undefined, { sensitivity: 'accent' }) === 0 ) )
     }
 
 }

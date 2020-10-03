@@ -1,9 +1,9 @@
 import IFFFieldModel, { IFFFieldModelProps } from "./IFFFieldModel";
 
 export interface IFFTextFieldModelProps extends IFFFieldModelProps {
-    width?: number;
+
 }
 
-export default interface IFFTextFieldModel extends IFFFieldModel {
+export default interface IFFDateFieldModel extends IFFFieldModel {
     props : IFFTextFieldModelProps
 }

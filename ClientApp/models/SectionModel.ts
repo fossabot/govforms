@@ -20,6 +20,11 @@ import UnsupportedFieldModel from './UnsupportedFieldModel';
 import FormModel from './FormModel';
 import { Expression } from './expressions/Expression';
 import FFConditionParser from './firmstep/conditions/FFConditionParser';
+import DateFieldModel from './DateFieldModel';
+import IFFDateFieldModel from './firmstep/IFFDateFieldModel';
+import NumberFieldModel from './NumberFieldModel';
+import IFFNumberFieldModel from './firmstep/IFFNumberFieldModel';
+import MultiCheckboxFieldModel from './MultiCheckboxFieldModel';
 
 export default class SectionModel {
 
@@ -39,7 +44,7 @@ export default class SectionModel {
                 this.fields.push(new RadioFieldModel(this, field as IFFRadioFieldModel));
             } else if (field.type == "checkbox") {
                 if ((<IFFCheckboxFieldModel>field).props.listOfValues.length > 1) {
-                    this.fields.push(new UnsupportedFieldModel(this, field, `Multi value checkbox not supported`));
+                    this.fields.push(new MultiCheckboxFieldModel(this, field as IFFCheckboxFieldModel));
                 } else {
                     this.fields.push(new CheckboxFieldModel(this, field as IFFCheckboxFieldModel));
                 }
@@ -47,6 +52,10 @@ export default class SectionModel {
                 this.fields.push(new SubFormFieldModel(this, field as IFFSubFormFieldModel));
             } else if (field.type == "select") {
                 this.fields.push(new SelectFieldModel(this, field as IFFSelectFieldModel));
+            } else if (field.type == "date") {
+                this.fields.push(new DateFieldModel(this, field as IFFDateFieldModel));
+            } else if (field.type == "number") {
+                this.fields.push(new NumberFieldModel(this, field as IFFNumberFieldModel));
             } else if (field.type == "html" || field.type == "staticText") {
                 this.fields.push(new HtmlFieldModel(this, field as IFFHtmlFieldModel));
             } else if (field.type == "line") {
@@ -76,7 +85,7 @@ export default class SectionModel {
     }
 
     @observable
-    enableValidation: boolean = false;
+    enableValidation: boolean = true;
 
     @observable
     hide: boolean = false;

@@ -7,6 +7,12 @@ export interface IFFFieldModelProps {
     mandatoryMessage?: string;
     helpText?: string;
     displayCondition?: string;
+    validationMask?: string;
+    _custom_regex_?: string;
+    validationMaskMessageValue?: string;
+    validationMaskMessage?: string;
+    validationCondition?: string;
+    validationConditionMessage?: string;
 }
 
 export default interface IFFFieldModel {

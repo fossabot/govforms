@@ -63,7 +63,7 @@ export default class Form extends React.Component<IProps, FormState> {
 
     render() {
         return (
-            <div>
+            <form noValidate>
                 { (!this.props.hideTitle && <h1 className="govuk-heading-xl">{this.props.data.title}</h1>)}
 
                 { this.props.data.invalidSections.length > 0 &&
@@ -141,7 +141,7 @@ export default class Form extends React.Component<IProps, FormState> {
                         Next
                 </a>
                 }
-            </div>
+            </form>
 
         )
     }

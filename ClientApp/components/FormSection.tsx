@@ -19,6 +19,12 @@ import CheckboxFieldModel from "@Models/CheckboxFieldModel";
 import RadioFieldModel from "@Models/RadioFieldModel";
 import FormField from "./fields/FormField";
 import { observer } from "mobx-react";
+import DateFieldModel from "@Models/DateFieldModel";
+import DateFormField from "./fields/DateFormField";
+import NumberFieldModel from "@Models/NumberFieldModel";
+import NumberFormField from "./fields/NumberFormField";
+import MultiCheckboxFieldModel from "@Models/MultiCheckboxFieldModel";
+import MultiCheckboxFormField from "./fields/MultiCheckboxFormField";
 
 
 export interface IProps {
@@ -41,6 +47,8 @@ export default class FormSection extends React.Component<IProps, {}> {
             return <RadioFormField field={f} />
         } else if (f instanceof CheckboxFieldModel) {
             return <CheckboxFormField field={f} />
+        } else if (f instanceof MultiCheckboxFieldModel) {
+            return <MultiCheckboxFormField field={f} />
         } else if (f instanceof SelectFieldModel) {
             return <SelectFormField field={f} />
         } else if (f instanceof SubFormFieldModel) {
@@ -49,6 +57,10 @@ export default class FormSection extends React.Component<IProps, {}> {
             return <HtmlFormField field={f}/>
         } else if (f instanceof UnsupportedFieldModel) {
             return <UnsupportedFormField field={f} />
+        } else if (f instanceof DateFieldModel){
+            return <DateFormField field={f}/>
+        } else if (f instanceof NumberFieldModel){
+            return <NumberFormField field={f}/>
         } else {
             throw "Error"!;
         }

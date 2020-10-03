@@ -5,7 +5,9 @@ import FFConditionParse from './firmstep/conditions/FFConditionParser';
 import { Parser } from './firmstep/conditions/FFConditions';
 import IFFFieldModel from './Firmstep/IFFFieldModel';
 import SectionModel from './SectionModel';
+import ExpressionFieldValidationRuleModel from './validation/ExpressionFieldValidationRuleModel';
 import { FieldValidationRuleModel } from './validation/FieldValidationRuleModel';
+import RegexFieldValidationRuleModel from './validation/RegexFieldValidationRuleModel';
 
 interface IFieldModelOptions<T> {
 
@@ -17,8 +19,12 @@ interface IFieldModelOptions<T> {
     required: boolean,
     requiredErrorMessage: string;
     hintText: string;
-    displayCondition?: Expression<any>;
+    displayCondition: Expression<any>;
+    validationRules: FieldValidationRuleModel<any>[];
 }
+
+const REGEX_SPLIT = /^\/(.*)\/([^/]*)$/;
+    
 
 export default class FieldModel<T> {
 
@@ -33,10 +39,27 @@ export default class FieldModel<T> {
         this.value = options.defaultValue;
         this.hintText = options.hintText;
 
-        this.displayCondition = options.displayCondition
+        this.displayCondition = options.displayCondition;
+        this.validationRules = options.validationRules;
     }
-
+    
+    
     static getOptions<T>(source: IFFFieldModel, defaultValue: T): IFieldModelOptions<T> {
+
+        let validationRules = [];
+
+        if (source.props.validationMask) {
+            let regexAndFlags = source.props.validationMask === "_custom_regex_" ? source.props._custom_regex_ : source.props.validationMask;
+            let regex = regexAndFlags.replace(REGEX_SPLIT, "$1");
+            let flags = regexAndFlags.replace(REGEX_SPLIT, "$2");
+            validationRules.push(new RegexFieldValidationRuleModel(new RegExp(regex, flags), source.props.validationMaskMessage.replace("_validation_mask_", source.props.validationMaskMessageValue)))
+        }
+
+        if (source.props.validationCondition) {
+            let expression = FFConditionParse.parse(source.props.validationCondition);
+            validationRules.push(new ExpressionFieldValidationRuleModel(expression, source.props.validationConditionMessage ?? "Invalid value"));
+        }
+
         return {
             name: source.props.dataName,
             displayName: source.props.label,
@@ -46,7 +69,8 @@ export default class FieldModel<T> {
             requiredErrorMessage: source.props.mandatoryMessage != "This field is required" ? source.props.mandatoryMessage : undefined,
             defaultValue: defaultValue,
             hintText: source.props.helpText,
-            displayCondition: source.props.displayCondition ? FFConditionParse.parse(source.props.displayCondition) : null
+            displayCondition: source.props.displayCondition ? FFConditionParse.parse(source.props.displayCondition) : null,
+            validationRules: validationRules
         };
     }
 
@@ -97,14 +121,37 @@ export default class FieldModel<T> {
     @observable
     hintText: string
 
+    protected get validate() : string {
+        return null;
+    }
+
+    protected get validateImmediate() : string {
+        return null;
+    }
 
     @computed get validationError(): string {
+
+        let conversionError = this.controls.map(c => c.conversionError).filter(e => e)[0];
+        if (conversionError) {
+            return conversionError;
+        }
+
+        let validationError = this.validateImmediate;
+        if (validationError) {
+            return validationError;
+        }
+
         if (!this.section.enableValidation) {
             return null;
         }
 
         if (this.required && this.value === null || this.value === undefined || (typeof (this.value) == "string" && this.value === "")) {
             return this.requiredErrorMessage;
+        }
+
+        validationError = this.validate;
+        if (validationError) {
+            return validationError;
         }
 
         for (let v of this.validationRules) {

@@ -50,10 +50,9 @@ export default class TextFormField extends FormField<TextFieldModel> {
         )}
 
         <input 
-          className="govuk-input" 
+          className={`govuk-input ${this.props.field.width ? ("govuk-input--width-" + this.props.field.width) : ""}`}
           ref={this.inputRef}
           id={this.props.field.name}
-          width={this.props.field.width ?? undefined}
           name={this.props.field.name}
           type="text"
           value={this.props.field.value}
